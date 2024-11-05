@@ -156,3 +156,53 @@ SELECT * FROM expiration_alert WHERE expiration_date < '2024-12-31';
 
 -- Count the total number of items per category in the food_item table
 SELECT category, COUNT(*) AS total_items FROM food_item GROUP BY category;
+
+-- 1. View Food Items
+-- Retrieves all food items in the user's inventory
+SELECT * FROM inventory WHERE user_id = 1;
+
+-- 2. Add a New Food Item to Inventory
+-- Insert a new food item into a user's inventory
+INSERT INTO inventory (user_id, item_name, quantity, expiration_date, category_name)
+VALUES (1, 'Yogurt', 3, '2024-11-25', 'fridge');
+
+-- 2b. Update an Existing Food Item in Inventory
+-- Update the quantity or expiration date of an existing food item
+UPDATE inventory
+SET quantity = 5, expiration_date = '2024-12-05'
+WHERE user_id = 1 AND item_name = 'Yogurt';
+
+-- 3. Check Expiration Date
+-- Retrieve items in the inventory that are close to expiring (e.g., within the next 7 days)
+SELECT * FROM inventory
+WHERE user_id = 1 AND expiration_date BETWEEN DATE('now') AND DATE('now', '+7 days');
+
+-- 4. Add Nutritional Information for a Food Item
+-- Insert nutritional info for a food item
+INSERT INTO nutritional_information (food_item_id, calories, protein, fat, carbohydrates, dietary_labels)
+VALUES (1, 150, 8, 5, 20, 'Low-fat');
+
+-- 4b. Update Nutritional Information for a Food Item
+-- Update existing nutritional info for a food item
+UPDATE nutritional_information
+SET calories = 160, fat = 6
+WHERE food_item_id = 1;
+
+-- 5. View Nutrition Info
+-- Retrieve nutritional information for a specific food item, e.g., 'Milk'
+SELECT ni.* FROM nutritional_information ni
+JOIN food_item fi ON ni.food_item_id = fi.food_item_id
+WHERE fi.item_name = 'Milk';
+
+-- 6. Generate Shopping List
+-- Retrieve all pending items in the shopping list for a user
+SELECT * FROM shopping_list WHERE user_id = 1 AND status = 'Pending';
+
+-- 7. Receive Expiration Alerts
+-- Retrieve all pending expiration alerts for items in a user's inventory
+SELECT * FROM expiration_alert WHERE user_id = 1 AND status = 'Pending';
+
+-- 8. System Sends Expiration Alerts
+-- Display expiration alerts for items that are expiring within the next 30 days
+SELECT * FROM expiration_alert
+WHERE expiration_date < DATE('now', '+30 days') AND status = 'Pending';
