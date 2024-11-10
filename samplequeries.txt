@@ -1,53 +1,87 @@
 ---------------------------------------------------------------------------------------------------------------------
 -- 1. View Food Items
 -- Retrieves all food items in the user's inventory
--- SELECT * FROM inventory WHERE user_id = 1;
+SELECT i.*, f.item_name 
+FROM inventory i 
+JOIN food_item f ON i.food_item_id = f.food_item_id 
+WHERE i.user_id = 1;
 
 -- 2. Add a New Food Item to Inventory
--- Insert a new food item into a user's inventory
--- INSERT INTO inventory (user_id, item_name, quantity, expiration_date, category_name)
--- VALUES (2, 'Yogurt', 3, '2024-11-25', 'fridge');
+-- Insert a new food item into a user's inventory, referencing the food_item_id of 'Yogurt' from food_item table
+INSERT INTO inventory (user_id, food_item_id, quantity, expiration_date, category_name)
+VALUES (2, (SELECT food_item_id FROM food_item WHERE item_name = 'Yogurt'), 3, '2024-11-25', 'fridge');
 
---  WEIRD!!! Not updating the table BUT shows if you run the verification query
 -- 2b. Update an Existing Food Item in Inventory
 -- Update the quantity or expiration date of an existing food item
--- UPDATE inventory
--- SET quantity = 5, expiration_date = '2024-12-05'
--- WHERE user_id = 2 AND item_name = 'Yogurt';
+UPDATE inventory
+SET quantity = 5, expiration_date = '2024-12-05'
+WHERE user_id = 2 AND food_item_id = (SELECT food_item_id FROM food_item WHERE item_name = 'Yogurt');
 -- VERIFICATION QUERY:
--- SELECT * FROM inventory WHERE user_id = 1 AND item_name = 'Yogurt';
+SELECT * FROM inventory WHERE user_id = 2 AND food_item_id = (SELECT food_item_id FROM food_item WHERE item_name = 'Yogurt');
 
 -- 3. Check Expiration Date
 -- Retrieve items in the inventory that are close to expiring (e.g., within the next 7 days)
--- SELECT * FROM inventory
--- WHERE user_id = 1 AND expiration_date BETWEEN DATE('now') AND DATE('now', '+7 days');
+SELECT i.*, f.item_name 
+FROM inventory i 
+JOIN food_item f ON i.food_item_id = f.food_item_id
+WHERE i.user_id = 1 AND i.expiration_date BETWEEN DATE('now') AND DATE('now', '+7 days');
 
 -- 4. Add Nutritional Information for a Food Item
 -- Insert nutritional info for a food item
--- INSERT INTO nutritional_information (food_item_id, calories, protein, fat, carbohydrates, dietary_labels)
--- VALUES (1, 150, 8, 5, 20, 'Low-fat');
+INSERT INTO nutritional_information (food_item_id, calories, protein, fat, carbohydrates, dietary_labels)
+VALUES ((SELECT food_item_id FROM food_item WHERE item_name = 'Milk'), 150, 8, 5, 20, 'Low-fat');
 
 -- 4b. Update Nutritional Information for a Food Item
 -- Update existing nutritional info for a food item
--- UPDATE nutritional_information
--- SET calories = 160, fat = 6
--- WHERE food_item_id = 1;
+UPDATE nutritional_information
+SET calories = 160, fat = 6
+WHERE food_item_id = (SELECT food_item_id FROM food_item WHERE item_name = 'Milk');
 
 -- 5. View Nutrition Info
 -- Retrieve nutritional information for a specific food item, e.g., 'Milk'
--- SELECT ni.* FROM nutritional_information ni
--- JOIN food_item fi ON ni.food_item_id = fi.food_item_id
--- WHERE fi.item_name = 'Milk';
+SELECT ni.* 
+FROM nutritional_information ni
+JOIN food_item fi ON ni.food_item_id = fi.food_item_id
+WHERE fi.item_name = 'Milk';
 
 -- 6. Generate Shopping List
 -- Retrieve all pending items in the shopping list for a user
--- SELECT * FROM shopping_list WHERE user_id = 1 AND status = 'Pending';
+SELECT s.*, f.item_name 
+FROM shopping_list s
+JOIN food_item f ON s.food_item_id = f.food_item_id
+WHERE s.user_id = 1 AND s.status = 'Pending';
 
 -- 7. Receive Expiration Alerts
 -- Retrieve all pending expiration alerts for items in a user's inventory
--- SELECT * FROM expiration_alert WHERE user_id = 1 AND status = 'Pending';
+SELECT * FROM expiration_alert WHERE user_id = 1 AND status = 'Pending';
 
 -- 8. System Sends Expiration Alerts
 -- Display expiration alerts for items that are expiring within the next 30 days
--- SELECT * FROM expiration_alert
--- WHERE expiration_date < DATE('now', '+30 days') AND status = 'Pending';
+SELECT * FROM expiration_alert
+WHERE expiration_date < DATE('now', '+30 days') AND status = 'Pending';
+
+-- Retrieve all dairy items in the food_item table
+SELECT * FROM food_item WHERE category = 'Dairy';
+
+-- Update the status of a purchased item in the shopping list
+UPDATE shopping_list SET status = 'Purchased' WHERE shopping_list_id = 1;
+
+-- Delete a user by email
+DELETE FROM user WHERE email = 'fromtheblock@gmail.com';
+
+-- Retrieve nutritional information for a specific food item labeled 'Organic'
+SELECT * FROM nutritional_information WHERE dietary_labels LIKE '%Organic%';
+
+-- Insert a new item into the inventory for user_id 2 with reference to food_item_id
+INSERT INTO inventory (user_id, food_item_id, quantity, expiration_date, category_name) 
+VALUES (2, (SELECT food_item_id FROM food_item WHERE item_name = 'Yogurt'), 3, '2024-11-25', 'fridge');
+
+-- Insert a new pending item into the shopping list for user_id 3 with food_item_id reference
+INSERT INTO shopping_list (user_id, food_item_id, quantity) 
+VALUES (3, (SELECT food_item_id FROM food_item WHERE item_name = 'Bananas'), 4);
+
+-- Display items that are expiring within the next 30 days
+SELECT * FROM expiration_alert WHERE expiration_date < '2024-12-31';
+
+-- Count the total number of items per category in the food_item table
+SELECT category, COUNT(*) AS total_items FROM food_item GROUP BY category;
