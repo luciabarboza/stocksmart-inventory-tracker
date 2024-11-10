@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS food_item;
 DROP TABLE IF EXISTS nutritional_information;
 DROP TABLE IF EXISTS expiration_alert;
 
--- Table creation based on relational schema
+
 
 -- 1. User Table: Stores user information with unique email
 CREATE TABLE user (
