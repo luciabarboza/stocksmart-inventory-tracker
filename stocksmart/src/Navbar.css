@@ -1,0 +1,32 @@
+.Navbar {
+    background-color: #b3d2d2;
+    overflow: hidden;
+}
+
+.Navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+}
+
+.Navbar li {
+    margin: 0 15px;
+}
+
+.Navbar a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    display: block;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+.Navbar a:hover {
+    background-color: #273a46;
+}
+

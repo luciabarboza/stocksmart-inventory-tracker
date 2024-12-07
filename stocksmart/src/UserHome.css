@@ -1,0 +1,51 @@
+
+.food-items-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+.food-items-page h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.inventory-section {
+    margin-bottom: 40px;
+}
+
+.inventory-section h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.items-table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.items-table th, .items-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.items-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.2em;
+}
+
+.items-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.items-table td {
+    font-size: 1em;
+}
