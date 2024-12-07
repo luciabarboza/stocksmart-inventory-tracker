@@ -11,8 +11,12 @@ const UserHome = () => {
       <section className="inventory-section">
         <h2>Pantry Items</h2>
 
+        <p>Items</p>
+
 
         <h2>Fridge Items</h2>
+
+        <p>Items</p>
 
         
       </section>
