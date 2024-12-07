@@ -19,6 +19,28 @@ const db = new sqlite3.Database('./Checkpoint2-dbase.sqlite3', (err) => {
 
 //Endpoints
 
+
+// Login Endpoint
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if user exists with the provided email and password
+  db.get(
+    'SELECT * FROM user WHERE email = ? AND password = ?',
+    [email, password],
+    (err, row) => {
+      if (err) {
+        res.status(500).json({ error: 'Internal server error' });
+      } else if (!row) {
+        res.status(401).json({ error: 'Invalid credentials' });
+      } else {
+        res.json({ message: 'Login successful', user: row });
+      }
+    }
+  );
+});
+
+
 // Get all inventory items should be two of em http://localhost:5001/inventory
 
 app.get('/inventory', (req, res) => {
