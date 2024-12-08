@@ -21,15 +21,17 @@ const InventoryManager = () => {
   }, []);
 
   // Fetch all inventory items
-  const fetchInventory = async () => {
-    try {
-      const response = await axios.get('http://localhost:5001/inventory');
-      setInventory(response.data);
-    } catch (err) {
-      setError('Failed to fetch inventory');
-      console.error(err);
-    }
-  };
+const fetchInventory = async () => {
+  try {
+    const userId = 1; // Replace this with the actual user ID from context or props
+    const response = await axios.get(`http://localhost:5001/inventory/${userId}`);
+    setInventory(response.data);
+  } catch (err) {
+    setError('Failed to fetch inventory');
+    console.error(err);
+  }
+};
+
 
   // Add a new item to inventory
   const handleAddItem = async (e) => {
