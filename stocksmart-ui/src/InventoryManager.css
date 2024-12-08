@@ -1,0 +1,178 @@
+.inventory-manager {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #b3d2d2; 
+  color: #273a46; 
+}
+
+.inventory-manager h1 {
+  text-align: center;
+  font-size: 2.8em;
+  color: #ff6f61; 
+  margin-bottom: 25px;
+}
+
+.inventory-manager section {
+  margin-bottom: 40px;
+  background-color: #ffffff; 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.inventory-manager h2 {
+  color: #ffb74d; 
+  margin-bottom: 15px;
+  font-size: 2em;
+  border-bottom: 2px solid #ffb74d;
+  display: inline-block;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form input, form select {
+  padding: 12px;
+  font-size: 1em;
+  border: 1px solid #273a46; 
+  border-radius: 4px;
+  background-color: #f9f4eb;
+  color: #273a46;
+  transition: box-shadow 0.3s ease;
+}
+
+form input:focus, form select:focus {
+  box-shadow: 0 0 8px #ff6f61; 
+  outline: none;
+}
+
+form button {
+  padding: 12px 20px;
+  background-color: #ff6f61; 
+  color: #ffffff; 
+  font-size: 1em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+form button:hover {
+  background-color: #ff4b40; 
+  transform: scale(1.05);
+}
+
+.error {
+  color: #d32f2f; 
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #ffffff; 
+}
+
+table thead {
+  background-color: #273a46; 
+  color: #ffffff;
+}
+
+table th, table td {
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #b3d2d2; 
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f4eb; 
+}
+
+
+
+table button {
+  padding: 10px 15px;
+  font-size: 0.9em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+table button:first-child {
+  background-color: rgb(235, 235, 133); 
+  color: #ffffff; 
+  margin-right: 5px;
+}
+
+table button:first-child:hover {
+  background-color: #388e3c; 
+  transform: scale(1.1);
+}
+
+table button:last-child {
+  background-color: #f44336; /* Red for delete */
+  color: #ffffff; 
+}
+
+table button:last-child:hover {
+  background-color: #d32f2f; 
+  transform: scale(1.1);
+}
+
+.inventory-manager .add-item-btn {
+  font-size: 24px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #273a46;
+  color: #f9f4eb;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.inventory-manager .popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inventory-manager .popup-content {
+  background-color: #f9f4eb;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.inventory-manager .popup-content h2 {
+  color: #273a46;
+}
+
+.inventory-manager .popup-content button {
+  margin-top: 10px;
+  margin-right: 5px;
+  background-color: #273a46;
+  color: #f9f4eb;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.inventory-manager .popup-content button:hover {
+  background-color: #b3d2d2;
+}
