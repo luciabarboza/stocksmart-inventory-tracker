@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserHome.css';
+import InventoryManager from './InventoryManager';
 
 const UserHome = () => {
   const [pantryItems, setPantryItems] = useState([]);
@@ -25,47 +26,8 @@ const UserHome = () => {
     <div className="food-items-page">
       <h1>Welcome to Your Inventory</h1>
 
-      <section className="inventory-section">
-        <h2>Pantry Items</h2>
-        <table className="items-table">
-          <thead>
-            <tr>
-              <th>Item Name</th>
-              <th>Quantity</th>
-              <th>Expiration Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pantryItems.map((item, index) => (
-              <tr key={index}>
-                <td>{item.item_name}</td>
-                <td>{item.quantity}</td>
-                <td>{item.expiration_date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <h2>Fridge Items</h2>
-        <table className="items-table">
-          <thead>
-            <tr>
-              <th>Item Name</th>
-              <th>Quantity</th>
-              <th>Expiration Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {fridgeItems.map((item, index) => (
-              <tr key={index}>
-                <td>{item.item_name}</td>
-                <td>{item.quantity}</td>
-                <td>{item.expiration_date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+      
+      <InventoryManager/>
     </div>
   );
 };
