@@ -1,7 +1,5 @@
-
 import React, { useState } from "react";
 import "./Login.css";
-
 
 const LoginForm = ({ onLogin, error }) => {
   const [email, setEmail] = useState("");
@@ -14,19 +12,20 @@ const LoginForm = ({ onLogin, error }) => {
 
   return (
     <div className="login-form-container">
-      <h2>Login</h2>
+      <h2>Welcome Back!</h2>
+      <p>Log in to access your inventory and manage your pantry with ease.</p>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <label>Email:</label>
         <input
           type="email"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <label>Password:</label>
         <input
           type="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
