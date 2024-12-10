@@ -122,6 +122,22 @@ app.delete('/inventory/:itemId', (req, res) => {
   });
 });
 
+app.get('/inventory/alerts', (req, res) => {
+  const query = `
+    SELECT * FROM inventory
+    WHERE expiration_date <= date('now', '+7 days')
+    ORDER BY expiration_date ASC
+  `;
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
+
 // Get expiring items for a specific user
 app.get('/inventory/:userId/expiring', (req, res) => {
   const { userId } = req.params;

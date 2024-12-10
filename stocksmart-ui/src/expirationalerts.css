@@ -1,0 +1,48 @@
+.expiration-alerts {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .bell-icon {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .bell-icon .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 50%;
+  }
+  
+  .alerts-list {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    max-width: 300px;
+  }
+  
+  .alerts-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .alerts-list li {
+    margin: 5px 0;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .alerts-list li:last-child {
+    border-bottom: none;
+  }
+  

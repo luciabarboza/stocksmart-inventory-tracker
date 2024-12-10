@@ -9,12 +9,16 @@
 
 .greeting {
     margin-bottom: 30px;
-    background-color: #ffffff;
+
+    backdrop-filter: blur(10px); /* Blur effect for glassy style */
+    -webkit-backdrop-filter: blur(10px); /* Safari compatibility */
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
     display: inline-block;
 }
+
+
 
 .greeting h1 {
     font-size: 2.5em;
@@ -65,4 +69,27 @@
 
 .items-table td {
     font-size: 1em;
+}
+
+.food-items-page {
+  position: relative; /* Ensure relative positioning for child elements */
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alerts-icon {
+  position: absolute; /* Allow absolute positioning */
+  top: 10px; /* Adjust this value to fine-tune vertical alignment */
+  right: 20px; /* Adjust this value to fine-tune horizontal alignment */
+  cursor: pointer;
+}
+
+.alerts-icon svg {
+  color: #000; /* Adjust color if needed */
+  font-size: 24px; /* Adjust size if needed */
 }

@@ -83,7 +83,7 @@ const InventoryManager = () => {
   return (
     <div className="inventory-manager">
       <h1>Inventory Manager</h1>
-      <h3>Add, update, or delete pantry/fridge items!</h3>
+      
       {error && <p className="error">{error}</p>}
 
       {/* Add Item Popup Trigger */}
