@@ -3,20 +3,26 @@ import LandingPage from './LandingPage';
 import Navbar from './Navbar';
 import UserHome from './UserHome';
 import LoginForm from './Login';
-import React, { useState } from 'react';
+import ExpirationAlerts from './ExpirationAlerts';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
-  const [user, setUser] = useState(null); // Track the logged-in user
-  const [error, setError] = useState(''); // Track login errors
+  const [user, setUser] = useState(() => {
+    // Load user from localStorage on initial render
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  const [error, setError] = useState('');
 
   const onLogin = (email, password) => {
     axios
       .post('http://localhost:5001/login', { email, password })
       .then((response) => {
-        setUser(response.data.user); // Set user state
-        setError(''); // Clear errors
+        setUser(response.data.user);
+        localStorage.setItem('user', JSON.stringify(response.data.user)); // Save user to localStorage
+        setError('');
       })
       .catch((err) => {
         setError('Invalid credentials');
@@ -25,7 +31,8 @@ function App() {
   };
 
   const onSignOut = () => {
-    setUser(null); // Reset user state to null
+    setUser(null);
+    localStorage.removeItem('user'); // Remove user from localStorage
   };
 
   return (
@@ -46,9 +53,18 @@ function App() {
 
           {/* User Home Page */}
           <Route
-            path="/home"
+  path="/home"
+  element={
+    user ? <UserHome user={user} /> : <Navigate to="/login" />
+  }
+/>
+
+
+          {/* Expiration Alerts */}
+          <Route
+            path="/alerts"
             element={
-              user ? <UserHome user={user} /> : <Navigate to="/login" />
+              user ? <ExpirationAlerts user={user} /> : <Navigate to="/login" />
             }
           />
         </Routes>

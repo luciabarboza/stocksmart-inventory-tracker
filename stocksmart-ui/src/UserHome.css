@@ -1,14 +1,31 @@
-
 .food-items-page {
     font-family: Arial, sans-serif;
     padding: 20px;
-    color: black;
+    color: #333;
     text-align: center;
+    background-color: #f5f7fa;
+    min-height: 100vh;
 }
 
-.food-items-page h1 {
+.greeting {
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.greeting h1 {
     font-size: 2.5em;
-    margin-bottom: 20px;
+    margin: 0;
+    color: #273a46;
+}
+
+.greeting p {
+    font-size: 1.2em;
+    margin: 10px 0 0;
+    color: #555;
 }
 
 .inventory-section {
@@ -22,7 +39,7 @@
 
 .items-table {
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto;
     border-collapse: collapse;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

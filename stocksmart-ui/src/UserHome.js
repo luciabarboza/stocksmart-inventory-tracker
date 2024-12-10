@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './UserHome.css';
 import InventoryManager from './InventoryManager';
 
-const UserHome = () => {
-  const [pantryItems, setPantryItems] = useState([]);
-  const [fridgeItems, setFridgeItems] = useState([]);
+const UserHome = ({ user }) => {
+  // Get the current hour to determine the greeting
+  const currentHour = new Date().getHours();
+  let greeting;
 
-  useEffect(() => {
-    // Fetch inventory data from the backend
-    fetch('http://localhost:5001/inventory')
-      .then((response) => response.json())
-      .then((data) => {
-        // Separate items into pantry and fridge categories
-        const pantry = data.filter((item) => item.category_name === 'pantry');
-        const fridge = data.filter((item) => item.category_name === 'fridge');
-        setPantryItems(pantry);
-        setFridgeItems(fridge);
-      })
-      .catch((error) => {
-        console.error('Error fetching inventory data:', error);
-      });
-  }, []);
+  if (currentHour < 12) {
+    greeting = 'Good morning';
+  } else if (currentHour < 18) {
+    greeting = 'Good afternoon';
+  } else {
+    greeting = 'Good evening';
+  }
 
   return (
     <div className="food-items-page">
-      <h1>Welcome to Your Inventory</h1>
-
+      <div className="greeting">
+        <h1>{greeting}, {user?.name || 'Guest'}!</h1>
+        <p>Welcome to your inventory management system.</p>
+      </div>
       
-      <InventoryManager/>
+      <InventoryManager />
     </div>
   );
 };
