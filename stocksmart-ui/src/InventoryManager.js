@@ -13,7 +13,7 @@ const InventoryManager = () => {
   });
   const [updateItem, setUpdateItem] = useState(null);
   const [error, setError] = useState('');
-  const [showAddPopup, setShowAddPopup] = useState(false); // click button for add-item popup
+  const [showAddPopup, setShowAddPopup] = useState(false);
 
   // Fetch inventory items on component mount
   useEffect(() => {
@@ -21,17 +21,16 @@ const InventoryManager = () => {
   }, []);
 
   // Fetch all inventory items
-const fetchInventory = async () => {
-  try {
-    const userId = 1; // Replace this with the actual user ID from context or props
-    const response = await axios.get(`http://localhost:5001/inventory/${userId}`);
-    setInventory(response.data);
-  } catch (err) {
-    setError('Failed to fetch inventory');
-    console.error(err);
-  }
-};
-
+  const fetchInventory = async () => {
+    try {
+      const userId = 1; // Replace this with the actual user ID from context or props
+      const response = await axios.get(`http://localhost:5001/inventory/${userId}`);
+      setInventory(response.data);
+    } catch (err) {
+      setError('Failed to fetch inventory');
+      console.error(err);
+    }
+  };
 
   // Add a new item to inventory
   const handleAddItem = async (e) => {
@@ -45,7 +44,7 @@ const fetchInventory = async () => {
         expiration_date: '',
         category_name: '',
       });
-      setShowAddPopup(false); // Close popup after adding item
+      setShowAddPopup(false);
       fetchInventory();
     } catch (err) {
       setError('Failed to add item');
@@ -76,6 +75,10 @@ const fetchInventory = async () => {
       console.error(err);
     }
   };
+
+  // Filter inventory by category
+  const filterByCategory = (category) =>
+    inventory.filter((item) => item.category_name === category);
 
   return (
     <div className="inventory-manager">
@@ -169,24 +172,76 @@ const fetchInventory = async () => {
       )}
 
       <section>
-        <h2>Inventory Items</h2>
+        <h2>Freezer Items</h2>
         <table>
           <thead>
             <tr>
               <th>Item Name</th>
               <th>Quantity</th>
               <th>Expiration Date</th>
-              <th>Category</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {inventory.map((item) => (
+            {filterByCategory('freezer').map((item) => (
               <tr key={item.inventory_id}>
                 <td>{item.item_name}</td>
                 <td>{item.quantity}</td>
                 <td>{item.expiration_date}</td>
-                <td>{item.category_name}</td>
+                <td>
+                  <button onClick={() => setUpdateItem(item)}>Edit</button>
+                  <button onClick={() => handleDeleteItem(item.inventory_id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Fridge Items</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Quantity</th>
+              <th>Expiration Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filterByCategory('fridge').map((item) => (
+              <tr key={item.inventory_id}>
+                <td>{item.item_name}</td>
+                <td>{item.quantity}</td>
+                <td>{item.expiration_date}</td>
+                <td>
+                  <button onClick={() => setUpdateItem(item)}>Edit</button>
+                  <button onClick={() => handleDeleteItem(item.inventory_id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Pantry Items</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Quantity</th>
+              <th>Expiration Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filterByCategory('pantry').map((item) => (
+              <tr key={item.inventory_id}>
+                <td>{item.item_name}</td>
+                <td>{item.quantity}</td>
+                <td>{item.expiration_date}</td>
                 <td>
                   <button onClick={() => setUpdateItem(item)}>Edit</button>
                   <button onClick={() => handleDeleteItem(item.inventory_id)}>Delete</button>

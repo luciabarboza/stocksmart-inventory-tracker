@@ -18,8 +18,6 @@ const db = new sqlite3.Database('./Checkpoint2-dbase.sqlite3', (err) => {
   }
 });
 
-// Endpoints
-
 // Login Endpoint
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
@@ -43,6 +41,10 @@ app.post('/login', (req, res) => {
 // Get all inventory items for a specific user
 app.get('/inventory/:userId', (req, res) => {
   const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
 
   const query = 'SELECT * FROM inventory WHERE user_id = ?';
   db.all(query, [userId], (err, rows) => {
@@ -80,7 +82,7 @@ app.put('/inventory/:itemId', (req, res) => {
   const { itemId } = req.params;
   const { quantity, expiration_date } = req.body;
 
-  if (quantity === undefined || expiration_date === undefined) {
+  if (!quantity || !expiration_date) {
     return res.status(400).json({ error: 'Quantity and expiration_date are required' });
   }
 
@@ -104,6 +106,10 @@ app.put('/inventory/:itemId', (req, res) => {
 app.delete('/inventory/:itemId', (req, res) => {
   const { itemId } = req.params;
 
+  if (!itemId) {
+    return res.status(400).json({ error: 'Item ID is required' });
+  }
+
   const query = 'DELETE FROM inventory WHERE inventory_id = ?';
   db.run(query, [itemId], function (err) {
     if (err) {
@@ -112,6 +118,28 @@ app.delete('/inventory/:itemId', (req, res) => {
       res.status(404).json({ error: 'Item not found' });
     } else {
       res.json({ message: 'Item deleted successfully' });
+    }
+  });
+});
+
+// Get expiring items for a specific user
+app.get('/inventory/:userId/expiring', (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
+
+  const query = `
+    SELECT * FROM inventory
+    WHERE user_id = ? AND expiration_date <= date('now', '+3 days')
+    ORDER BY expiration_date ASC
+  `;
+  db.all(query, [userId], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json(rows);
     }
   });
 });

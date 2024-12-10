@@ -4,13 +4,13 @@ import Navbar from './Navbar';
 import UserHome from './UserHome';
 import LoginForm from './Login';
 import ExpirationAlerts from './ExpirationAlerts';
-import React, { useState, useEffect } from 'react';
+import InventoryManager from './InventoryManager';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
   const [user, setUser] = useState(() => {
-    // Load user from localStorage on initial render
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
@@ -21,7 +21,7 @@ function App() {
       .post('http://localhost:5001/login', { email, password })
       .then((response) => {
         setUser(response.data.user);
-        localStorage.setItem('user', JSON.stringify(response.data.user)); // Save user to localStorage
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         setError('');
       })
       .catch((err) => {
@@ -32,7 +32,7 @@ function App() {
 
   const onSignOut = () => {
     setUser(null);
-    localStorage.removeItem('user'); // Remove user from localStorage
+    localStorage.removeItem('user');
   };
 
   return (
@@ -40,32 +40,22 @@ function App() {
       <div className="App">
         <Navbar user={user} onSignOut={onSignOut} />
         <Routes>
-          {/* Landing Page */}
           <Route path="/" element={<LandingPage />} />
-
-          {/* Login Page */}
           <Route
             path="/login"
-            element={
-              user ? <Navigate to="/home" /> : <LoginForm onLogin={onLogin} error={error} />
-            }
+            element={user ? <Navigate to="/home" /> : <LoginForm onLogin={onLogin} error={error} />}
           />
-
-          {/* User Home Page */}
           <Route
-  path="/home"
-  element={
-    user ? <UserHome user={user} /> : <Navigate to="/login" />
-  }
-/>
-
-
-          {/* Expiration Alerts */}
+            path="/home"
+            element={user ? <UserHome user={user} /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/inventory"
+            element={user ? <InventoryManager user={user} /> : <Navigate to="/login" />}
+          />
           <Route
             path="/alerts"
-            element={
-              user ? <ExpirationAlerts user={user} /> : <Navigate to="/login" />
-            }
+            element={user ? <ExpirationAlerts user={user} /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>
