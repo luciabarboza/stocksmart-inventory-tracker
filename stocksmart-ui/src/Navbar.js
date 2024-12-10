@@ -8,7 +8,7 @@ function Navbar({ user, onSignOut }) {
           <a href="/home">Home</a>
         </li>
         <li>
-          <a href="/alerts">Create Shopping List</a>
+          <a href="/createshoppinglist">Create Shopping List</a>
         </li>
         <li>
           <a href="/contact">Contact</a>

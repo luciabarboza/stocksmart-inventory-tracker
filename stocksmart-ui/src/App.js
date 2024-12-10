@@ -3,8 +3,8 @@ import LandingPage from './LandingPage';
 import Navbar from './Navbar';
 import UserHome from './UserHome';
 import LoginForm from './Login';
-import ExpirationAlerts from './ExpirationAlerts';
 import InventoryManager from './InventoryManager';
+import CreateShoppingList from './CreateShoppingList'; // Import the component
 import React, { useState } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -54,8 +54,8 @@ function App() {
             element={user ? <InventoryManager user={user} /> : <Navigate to="/login" />}
           />
           <Route
-            path="/alerts"
-            element={user ? <ExpirationAlerts user={user} /> : <Navigate to="/login" />}
+            path="/createshoppinglist"
+            element={user ? <CreateShoppingList /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>
