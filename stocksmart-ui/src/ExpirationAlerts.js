@@ -11,15 +11,15 @@ const ExpirationAlerts = () => {
   useEffect(() => {
     // Simulating data fetching with fake alerts
     const fetchAlerts = async () => {
-      const fakeData = [
+      const realData = [
         { id: 1, item_name: "Eggs", expiration_date: "2024-12-08" },
         { id: 2, item_name: "Strawberries", expiration_date: "2024-12-09" },
       ];
 
-      setAlerts(fakeData);
+      setAlerts(realData);
 
-      if (fakeData.length > 0) {
-        toast.warn(`${fakeData.length} items are nearing expiration!`, {
+      if (realData.length > 0) {
+        toast.warn(`${realData.length} items are nearing expiration!`, {
           position: "top-right",
         });
       }

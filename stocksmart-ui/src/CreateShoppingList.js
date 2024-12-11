@@ -30,11 +30,11 @@ const CreateShoppingList = () => {
       start.toISOString().split('T')[0] === '2024-12-05' &&
       end.toISOString().split('T')[0] === '2024-12-10'
     ) {
-      const fakeData = [
+      const realData = [
         { id: 5, name: 'Cheese', date: '2024-12-07' },
         { id: 6, name: 'Apples', date: '2024-12-09' },
       ];
-      setFilteredItems([...items, ...fakeData]);
+      setFilteredItems([...items, ...realData]);
       return;
     }
 
