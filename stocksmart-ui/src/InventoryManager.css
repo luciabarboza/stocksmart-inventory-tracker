@@ -17,7 +17,7 @@
   background-color: #ffffff; 
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  align-items: center;
 }
 
 .inventory-manager h2 {
@@ -41,7 +41,6 @@ form input, form select {
   border-radius: 4px;
   background-color: #f9f4eb;
   color: #273a46;
-  transition: box-shadow 0.3s ease;
 }
 
 form input:focus, form select:focus {
@@ -155,7 +154,9 @@ table button:last-child:hover {
   background-color: #f9f4eb;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  align-items: center;
+
+
 }
 
 .inventory-manager .popup-content h2 {

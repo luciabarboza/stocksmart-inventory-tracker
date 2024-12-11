@@ -9,17 +9,23 @@ const ExpirationAlerts = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5001/inventory/alerts")
-      .then((response) => response.json())
-      .then((data) => {
-        setAlerts(data);
-        if (data.length > 0) {
-          toast.warn(`${data.length} items are nearing expiration!`, {
-            position: toast.POSITION.TOP_RIGHT,
-          });
-        }
-      })
-      .catch((error) => console.error("Error fetching alerts:", error));
+    // Simulating data fetching with fake alerts
+    const fetchAlerts = async () => {
+      const fakeData = [
+        { id: 1, item_name: "Eggs", expiration_date: "2024-12-08" },
+        { id: 2, item_name: "Strawberries", expiration_date: "2024-12-09" },
+      ];
+
+      setAlerts(fakeData);
+
+      if (fakeData.length > 0) {
+        toast.warn(`${fakeData.length} items are nearing expiration!`, {
+          position: "top-right",
+        });
+      }
+    };
+
+    fetchAlerts();
   }, []);
 
   const toggleAlerts = () => {

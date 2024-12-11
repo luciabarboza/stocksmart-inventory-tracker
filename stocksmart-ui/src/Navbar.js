@@ -10,9 +10,7 @@ function Navbar({ user, onSignOut }) {
         <li>
           <a href="/createshoppinglist">Create Shopping List</a>
         </li>
-        <li>
-          <a href="/contact">Contact</a>
-        </li>
+        
         {user ? (
           <li>
             <button onClick={onSignOut} className="Navbar">

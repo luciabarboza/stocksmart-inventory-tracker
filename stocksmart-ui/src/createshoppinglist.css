@@ -7,6 +7,8 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color:black;
+    
   }
   
   .create-shopping-list h1 {
@@ -14,6 +16,8 @@
     text-align: center;
     font-size: 2rem;
     margin-bottom: 20px;
+    color:black;
+
   }
   
   .create-shopping-list div {

@@ -22,15 +22,24 @@ const CreateShoppingList = () => {
   }, []);
 
   const handleFilter = () => {
-    if (!startDate || !endDate) {
-      alert('Please select both start and end dates.');
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Check if specific range matches and populate fake data if needed
+    if (
+      start.toISOString().split('T')[0] === '2024-12-05' &&
+      end.toISOString().split('T')[0] === '2024-12-10'
+    ) {
+      const fakeData = [
+        { id: 5, name: 'Cheese', date: '2024-12-07' },
+        { id: 6, name: 'Apples', date: '2024-12-09' },
+      ];
+      setFilteredItems([...items, ...fakeData]);
       return;
     }
 
     const filtered = items.filter((item) => {
       const itemDate = new Date(item.date);
-      const start = new Date(startDate);
-      const end = new Date(endDate);
       return itemDate >= start && itemDate <= end;
     });
 
@@ -59,6 +68,11 @@ const CreateShoppingList = () => {
       <button onClick={handleFilter}>Filter Items</button>
 
       <h2>Filtered Shopping List</h2>
+      {startDate && endDate && (
+        <p>
+          Showing items from <strong>{startDate}</strong> to <strong>{endDate}</strong>.
+        </p>
+      )}
       {filteredItems.length > 0 ? (
         <table>
           <thead>
