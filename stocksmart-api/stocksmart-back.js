@@ -64,36 +64,24 @@ app.post('/inventory', (req, res) => {
     quantity,
     expiration_date,
     category_name,
-    brand_name,
-    nutritional_id,
-    calories,
-    protein,
-    fat,
-    carbohydrates,
-    dietary_labels,
+    brand_name = null, // Default to null
+    calories = null,
+    protein = null,
+    fat = null,
+    carbohydrates = null,
+    dietary_labels = null,
   } = req.body;
 
-  if (
-    !user_id ||
-    !item_name ||
-    !quantity ||
-    !expiration_date ||
-    !category_name ||
-    !brand_name ||
-    calories == null ||
-    protein == null ||
-    fat == null ||
-    carbohydrates == null
-  ) {
-    return res.status(400).json({ error: 'All fields are required' });
+  if (!user_id || !item_name || !quantity || !expiration_date || !category_name) {
+    return res.status(400).json({ error: 'Required fields are missing' });
   }
 
   const query = `
     INSERT INTO inventory (
       user_id, item_name, quantity, expiration_date, category_name,
-      brand_name, nutritional_id, calories, protein, fat, carbohydrates, dietary_labels
+      brand_name, calories, protein, fat, carbohydrates, dietary_labels
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   db.run(
@@ -105,7 +93,6 @@ app.post('/inventory', (req, res) => {
       expiration_date,
       category_name,
       brand_name,
-      nutritional_id,
       calories,
       protein,
       fat,
@@ -114,10 +101,9 @@ app.post('/inventory', (req, res) => {
     ],
     function (err) {
       if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.json({ message: 'Item added successfully', id: this.lastID });
+        return res.status(500).json({ error: err.message });
       }
+      res.json({ message: 'Item added successfully', id: this.lastID });
     }
   );
 });
@@ -128,30 +114,21 @@ app.put('/inventory/:itemId', (req, res) => {
   const {
     quantity,
     expiration_date,
-    brand_name,
-    nutritional_id,
-    calories,
-    protein,
-    fat,
-    carbohydrates,
-    dietary_labels,
+    brand_name = null, // Default to null
+    calories = null,
+    protein = null,
+    fat = null,
+    carbohydrates = null,
+    dietary_labels = null,
   } = req.body;
 
-  if (
-    !quantity ||
-    !expiration_date ||
-    !brand_name ||
-    calories == null ||
-    protein == null ||
-    fat == null ||
-    carbohydrates == null
-  ) {
-    return res.status(400).json({ error: 'All fields are required' });
+  if (!quantity || !expiration_date) {
+    return res.status(400).json({ error: 'Required fields are missing' });
   }
 
   const query = `
     UPDATE inventory
-    SET quantity = ?, expiration_date = ?, brand_name = ?, nutritional_id = ?,
+    SET quantity = ?, expiration_date = ?, brand_name = ?, 
         calories = ?, protein = ?, fat = ?, carbohydrates = ?, dietary_labels = ?
     WHERE inventory_id = ?
   `;
@@ -162,7 +139,6 @@ app.put('/inventory/:itemId', (req, res) => {
       quantity,
       expiration_date,
       brand_name,
-      nutritional_id,
       calories,
       protein,
       fat,
@@ -172,15 +148,16 @@ app.put('/inventory/:itemId', (req, res) => {
     ],
     function (err) {
       if (err) {
-        res.status(500).json({ error: err.message });
-      } else if (this.changes === 0) {
-        res.status(404).json({ error: 'Item not found' });
-      } else {
-        res.json({ message: 'Item updated successfully' });
+        return res.status(500).json({ error: err.message });
       }
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Item not found' });
+      }
+      res.json({ message: 'Item updated successfully' });
     }
   );
 });
+
 
 // Delete an item from the user's inventory
 app.delete('/inventory/:itemId', (req, res) => {
