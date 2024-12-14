@@ -178,36 +178,44 @@ const InventoryManager = () => {
 
       {/* Update Item Popup */}
       {updateItem && (
-        <div className="popup">
-          <div className="popup-content">
-            <h2>Update Item</h2>
-            <form onSubmit={handleUpdateItem}>
-              <input
-                type="text"
-                placeholder="Item Name"
-                value={updateItem.item_name}
-                onChange={(e) => setUpdateItem({ ...updateItem, item_name: e.target.value })}
-                required
-              />
-              <input
-                type="number"
-                placeholder="Quantity"
-                value={updateItem.quantity}
-                onChange={(e) => setUpdateItem({ ...updateItem, quantity: e.target.value })}
-                required
-              />
-              <input
-                type="date"
-                value={updateItem.expiration_date}
-                onChange={(e) => setUpdateItem({ ...updateItem, expiration_date: e.target.value })}
-                required
-              />
-              <button type="submit">Update Item</button>
-              <button type="button" onClick={() => setUpdateItem(null)}>Cancel</button>
-            </form>
-          </div>
-        </div>
-      )}
+  <div className="popup">
+    <div className="popup-content">
+      <h2>Update Item</h2>
+      <form onSubmit={handleUpdateItem}>
+        <input
+          type="text"
+          placeholder="Item Name"
+          value={updateItem.item_name || ''}
+          onChange={(e) => setUpdateItem({ ...updateItem, item_name: e.target.value })}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Quantity"
+          value={updateItem.quantity || ''}
+          onChange={(e) => setUpdateItem({ ...updateItem, quantity: e.target.value })}
+          required
+        />
+        <input
+          type="date"
+          value={updateItem.expiration_date || ''}
+          onChange={(e) => setUpdateItem({ ...updateItem, expiration_date: e.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Brand Name" // Add this field
+          value={updateItem.brand_name || ''} // Bind to updateItem.brand_name
+          onChange={(e) => setUpdateItem({ ...updateItem, brand_name: e.target.value })}
+          required
+        />
+        <button type="submit">Update Item</button>
+        <button type="button" onClick={() => setUpdateItem(null)}>Cancel</button>
+      </form>
+    </div>
+  </div>
+)}
+
 
       {/* Nutrition Info Popup */}
       {showNutritionPopup && nutritionInfo && (
