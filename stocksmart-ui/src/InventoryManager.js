@@ -18,11 +18,12 @@ const InventoryManager = () => {
     carbohydrates: '',
     dietary_labels: '',
   });
-  const [updateItem, setUpdateItem] = useState(null);
+  const [updateItem, setUpdateItem] = useState(null); // Item to be updated
   const [error, setError] = useState('');
   const [showAddPopup, setShowAddPopup] = useState(false);
-  const [showNutritionPopup, setShowNutritionPopup] = useState(false);
-  const [nutritionInfo, setNutritionInfo] = useState(null);
+  const [showNutritionPopup, setShowNutritionPopup] = useState(false); // Tracks Nutrition Info popup visibility
+  const [nutritionInfo, setNutritionInfo] = useState(null); // Holds selected item's nutrition info
+  const [isEditingNutrition, setIsEditingNutrition] = useState(false); // Tracks edit mode for Nutrition Info popup
 
   // Fetch inventory items on component mount
   useEffect(() => {
@@ -81,6 +82,21 @@ const InventoryManager = () => {
     }
   };
 
+  // Update nutrition info for an item
+  const handleUpdateNutritionInfo = async () => {
+    try {
+      await axios.put(
+        `http://localhost:5001/inventory/${nutritionInfo.inventory_id}`, // Use the item's inventory_id
+        nutritionInfo // Send the updated nutrition info
+      );
+      fetchInventory(); // Refresh inventory data to reflect changes
+      setShowNutritionPopup(false); // Close the popup
+    } catch (err) {
+      setError('Failed to update nutrition info');
+      console.error(err);
+    }
+  };
+
   // Delete an item from inventory
   const handleDeleteItem = async (id) => {
     try {
@@ -94,8 +110,9 @@ const InventoryManager = () => {
 
   // Show nutrition info popup
   const handleViewNutrition = (item) => {
-    setNutritionInfo(item);
-    setShowNutritionPopup(true);
+    setNutritionInfo(item); // Set the selected item's nutrition info
+    setShowNutritionPopup(true); // Show the popup
+    setIsEditingNutrition(false); // Ensure it's in view mode by default
   };
 
   // Filter inventory by category
@@ -152,19 +169,6 @@ const InventoryManager = () => {
                 onChange={(e) => setNewItem({ ...newItem, brand_name: e.target.value })}
                 required
               />
-              <input
-                type="number"
-                placeholder="Calories"
-                value={newItem.calories}
-                onChange={(e) => setNewItem({ ...newItem, calories: e.target.value })}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Dietary Labels"
-                value={newItem.dietary_labels}
-                onChange={(e) => setNewItem({ ...newItem, dietary_labels: e.target.value })}
-              />
               <button type="submit">Add Item</button>
               <button type="button" onClick={() => setShowAddPopup(false)}>Cancel</button>
             </form>
@@ -198,23 +202,6 @@ const InventoryManager = () => {
                 onChange={(e) => setUpdateItem({ ...updateItem, expiration_date: e.target.value })}
                 required
               />
-              <select
-                value={updateItem.category_name}
-                onChange={(e) => setUpdateItem({ ...updateItem, category_name: e.target.value })}
-                required
-              >
-                <option value="">Select Category</option>
-                <option value="freezer">Freezer</option>
-                <option value="fridge">Fridge</option>
-                <option value="pantry">Pantry</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Brand Name"
-                value={updateItem.brand_name}
-                onChange={(e) => setUpdateItem({ ...updateItem, brand_name: e.target.value })}
-                required
-              />
               <button type="submit">Update Item</button>
               <button type="button" onClick={() => setUpdateItem(null)}>Cancel</button>
             </form>
@@ -227,12 +214,94 @@ const InventoryManager = () => {
         <div className="popup">
           <div className="popup-content">
             <h2>Nutrition Information</h2>
-            <p><strong>Nutritional ID:</strong> {nutritionInfo.nutritional_id}</p>
-            <p><strong>Calories:</strong> {nutritionInfo.calories}</p>
-            <p><strong>Protein:</strong> {nutritionInfo.protein}</p>
-            <p><strong>Fat:</strong> {nutritionInfo.fat}</p>
-            <p><strong>Carbohydrates:</strong> {nutritionInfo.carbohydrates}</p>
-            <p><strong>Dietary Labels:</strong> {nutritionInfo.dietary_labels}</p>
+            {isEditingNutrition ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleUpdateNutritionInfo(); // Save changes to the backend
+                }}
+              >
+                <label>
+                  Nutritional ID:
+                  <input
+                    type="text"
+                    value={nutritionInfo.nutritional_id || ''}
+                    onChange={(e) =>
+                      setNutritionInfo({ ...nutritionInfo, nutritional_id: e.target.value })
+                    }
+                    required
+                  />
+                </label>
+                <label>
+                  Calories:
+                  <input
+                    type="number"
+                    value={nutritionInfo.calories || ''}
+                    onChange={(e) =>
+                      setNutritionInfo({ ...nutritionInfo, calories: e.target.value })
+                    }
+                    required
+                  />
+                </label>
+                <label>
+                  Protein:
+                  <input
+                    type="number"
+                    value={nutritionInfo.protein || ''}
+                    onChange={(e) =>
+                      setNutritionInfo({ ...nutritionInfo, protein: e.target.value })
+                    }
+                    required
+                  />
+                </label>
+                <label>
+                  Fat:
+                  <input
+                    type="number"
+                    value={nutritionInfo.fat || ''}
+                    onChange={(e) =>
+                      setNutritionInfo({ ...nutritionInfo, fat: e.target.value })
+                    }
+                    required
+                  />
+                </label>
+                <label>
+                  Carbohydrates:
+                  <input
+                    type="number"
+                    value={nutritionInfo.carbohydrates || ''}
+                    onChange={(e) =>
+                      setNutritionInfo({ ...nutritionInfo, carbohydrates: e.target.value })
+                    }
+                    required
+                  />
+                </label>
+                <label>
+                  Dietary Labels:
+                  <input
+                    type="text"
+                    value={nutritionInfo.dietary_labels || ''}
+                    onChange={(e) =>
+                      setNutritionInfo({ ...nutritionInfo, dietary_labels: e.target.value })
+                    }
+                  />
+                </label>
+                <button type="submit">Save Changes</button>
+                <button type="button" onClick={() => setShowNutritionPopup(false)}>
+                  Cancel
+                </button>
+              </form>
+            ) : (
+              <>
+                <p><strong>Nutritional ID:</strong> {nutritionInfo.nutritional_id}</p>
+                <p><strong>Calories:</strong> {nutritionInfo.calories}</p>
+                <p><strong>Protein:</strong> {nutritionInfo.protein}</p>
+                <p><strong>Fat:</strong> {nutritionInfo.fat}</p>
+                <p><strong>Carbohydrates:</strong> {nutritionInfo.carbohydrates}</p>
+                <p><strong>Dietary Labels:</strong> {nutritionInfo.dietary_labels}</p>
+                <button onClick={() => setIsEditingNutrition(true)}>Edit</button>
+              </>
+            )}
             <button onClick={() => setShowNutritionPopup(false)}>Close</button>
           </div>
         </div>
