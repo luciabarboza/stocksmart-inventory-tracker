@@ -58,48 +58,128 @@ app.get('/inventory/:userId', (req, res) => {
 
 // Add an item to a user's inventory
 app.post('/inventory', (req, res) => {
-  const { user_id, item_name, quantity, expiration_date, category_name } = req.body;
+  const {
+    user_id,
+    item_name,
+    quantity,
+    expiration_date,
+    category_name,
+    brand_name,
+    nutritional_id,
+    calories,
+    protein,
+    fat,
+    carbohydrates,
+    dietary_labels,
+  } = req.body;
 
-  if (!user_id || !item_name || !quantity || !expiration_date || !category_name) {
+  if (
+    !user_id ||
+    !item_name ||
+    !quantity ||
+    !expiration_date ||
+    !category_name ||
+    !brand_name ||
+    calories == null ||
+    protein == null ||
+    fat == null ||
+    carbohydrates == null
+  ) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
   const query = `
-    INSERT INTO inventory (user_id, item_name, quantity, expiration_date, category_name)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO inventory (
+      user_id, item_name, quantity, expiration_date, category_name,
+      brand_name, nutritional_id, calories, protein, fat, carbohydrates, dietary_labels
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
-  db.run(query, [user_id, item_name, quantity, expiration_date, category_name], function (err) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ message: 'Item added successfully', id: this.lastID });
+
+  db.run(
+    query,
+    [
+      user_id,
+      item_name,
+      quantity,
+      expiration_date,
+      category_name,
+      brand_name,
+      nutritional_id,
+      calories,
+      protein,
+      fat,
+      carbohydrates,
+      dietary_labels,
+    ],
+    function (err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.json({ message: 'Item added successfully', id: this.lastID });
+      }
     }
-  });
+  );
 });
 
 // Update an item in the user's inventory
 app.put('/inventory/:itemId', (req, res) => {
   const { itemId } = req.params;
-  const { quantity, expiration_date } = req.body;
+  const {
+    quantity,
+    expiration_date,
+    brand_name,
+    nutritional_id,
+    calories,
+    protein,
+    fat,
+    carbohydrates,
+    dietary_labels,
+  } = req.body;
 
-  if (!quantity || !expiration_date) {
-    return res.status(400).json({ error: 'Quantity and expiration_date are required' });
+  if (
+    !quantity ||
+    !expiration_date ||
+    !brand_name ||
+    calories == null ||
+    protein == null ||
+    fat == null ||
+    carbohydrates == null
+  ) {
+    return res.status(400).json({ error: 'All fields are required' });
   }
 
   const query = `
     UPDATE inventory
-    SET quantity = ?, expiration_date = ?
+    SET quantity = ?, expiration_date = ?, brand_name = ?, nutritional_id = ?,
+        calories = ?, protein = ?, fat = ?, carbohydrates = ?, dietary_labels = ?
     WHERE inventory_id = ?
   `;
-  db.run(query, [quantity, expiration_date, itemId], function (err) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else if (this.changes === 0) {
-      res.status(404).json({ error: 'Item not found' });
-    } else {
-      res.json({ message: 'Item updated successfully' });
+
+  db.run(
+    query,
+    [
+      quantity,
+      expiration_date,
+      brand_name,
+      nutritional_id,
+      calories,
+      protein,
+      fat,
+      carbohydrates,
+      dietary_labels,
+      itemId,
+    ],
+    function (err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else if (this.changes === 0) {
+        res.status(404).json({ error: 'Item not found' });
+      } else {
+        res.json({ message: 'Item updated successfully' });
+      }
     }
-  });
+  );
 });
 
 // Delete an item from the user's inventory
@@ -121,22 +201,6 @@ app.delete('/inventory/:itemId', (req, res) => {
     }
   });
 });
-
-app.get('/inventory/alerts', (req, res) => {
-  const query = `
-    SELECT * FROM inventory
-    WHERE expiration_date <= date('now', '+7 days')
-    ORDER BY expiration_date ASC
-  `;
-  db.all(query, [], (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json(rows);
-    }
-  });
-});
-
 
 // Get expiring items for a specific user
 app.get('/inventory/:userId/expiring', (req, res) => {
